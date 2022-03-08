@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BluetoothComms", "BluetoothComms\BluetoothComms.csproj", "{B588B5FA-483F-4472-BA30-96C786C45545}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B588B5FA-483F-4472-BA30-96C786C45545}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B588B5FA-483F-4472-BA30-96C786C45545}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B588B5FA-483F-4472-BA30-96C786C45545}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B588B5FA-483F-4472-BA30-96C786C45545}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C51C777-CBE3-46DE-A163-AEF947872B30}
+	EndGlobalSection
+EndGlobal
