@@ -66,7 +66,13 @@ namespace BluetoothComms.Bluetooth {
             return true;
         }
 
+        private readonly byte[] _header = {0xF0, 0xAA};
+        public void SendHeader() {
+            BluetoothManager.Instance.SendBytes(_header);
+        }
+
         public void SetMode(LEDControllerMode mode) {
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.SET_MODE);
             BluetoothManager.Instance.SendByte((byte)mode);
         }
@@ -77,6 +83,7 @@ namespace BluetoothComms.Bluetooth {
         private Stopwatch stopwatch;
         public void Ping() {
             stopwatch = Stopwatch.StartNew();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.PING);
         }
 
@@ -103,6 +110,7 @@ namespace BluetoothComms.Bluetooth {
                 throw new Exception("Data length must be equal to number of spectrum lines.");
             }
 
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_START);
             BluetoothManager.Instance.SendBytes(data);
         }
@@ -121,6 +129,7 @@ namespace BluetoothComms.Bluetooth {
             }
 
             EnsureNoActivity();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_HSV);
             BluetoothManager.Instance.SendByte((byte)FreeFormMode.STATIC);
             BluetoothManager.Instance.SendByte((byte)DataMode.UNIQUE);
@@ -132,6 +141,7 @@ namespace BluetoothComms.Bluetooth {
             }
 
             EnsureNoActivity();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_HSV);
             BluetoothManager.Instance.SendByte((byte)FreeFormMode.STATIC);
             BluetoothManager.Instance.SendByte((byte)DataMode.UNIFORM);
@@ -148,6 +158,7 @@ namespace BluetoothComms.Bluetooth {
             }
 
             EnsureNoActivity();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_HSV);
             BluetoothManager.Instance.SendByte((byte)FreeFormMode.FADE_IN);
             BluetoothManager.Instance.SendBytes(BitConverter.GetBytes(ms));
@@ -161,6 +172,7 @@ namespace BluetoothComms.Bluetooth {
             }
 
             EnsureNoActivity();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_HSV);
             BluetoothManager.Instance.SendByte((byte)FreeFormMode.FADE_IN);
             BluetoothManager.Instance.SendBytes(BitConverter.GetBytes(ms));
@@ -178,6 +190,7 @@ namespace BluetoothComms.Bluetooth {
             }
 
             EnsureNoActivity();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_HSV);
             BluetoothManager.Instance.SendByte((byte)FreeFormMode.FADE_OUT);
             BluetoothManager.Instance.SendBytes(BitConverter.GetBytes(ms));
@@ -191,6 +204,7 @@ namespace BluetoothComms.Bluetooth {
             }
 
             EnsureNoActivity();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_HSV);
             BluetoothManager.Instance.SendByte((byte)FreeFormMode.FADE_OUT);
             BluetoothManager.Instance.SendBytes(BitConverter.GetBytes(ms));
@@ -208,6 +222,7 @@ namespace BluetoothComms.Bluetooth {
             }
 
             EnsureNoActivity();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_HSV);
             BluetoothManager.Instance.SendByte((byte)FreeFormMode.FADE_IN_OUT);
             BluetoothManager.Instance.SendBytes(BitConverter.GetBytes(msIn));
@@ -222,6 +237,7 @@ namespace BluetoothComms.Bluetooth {
             }
 
             EnsureNoActivity();
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.DATA_HSV);
             BluetoothManager.Instance.SendByte((byte)FreeFormMode.FADE_IN_OUT);
             BluetoothManager.Instance.SendBytes(BitConverter.GetBytes(msIn));
@@ -258,6 +274,7 @@ namespace BluetoothComms.Bluetooth {
             do {
                 elapsedUs = stopWatch.ElapsedTicks / (Stopwatch.Frequency / (1000L * 1000L));
                 if (elapsedUs > runs * arduinoDisableInterruptsUs / 10) {
+                    SendHeader();
                     BluetoothManager.Instance.SendByte(LEDControllerSendCodes.CANCEL);
                     ++runs;
                 }
@@ -320,6 +337,7 @@ namespace BluetoothComms.Bluetooth {
 
         private void OnNewConnection() {
             Connected = true;
+            SendHeader();
             BluetoothManager.Instance.SendByte(LEDControllerSendCodes.HELLO);
         }
     }
