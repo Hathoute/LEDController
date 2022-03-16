@@ -108,6 +108,7 @@ namespace BluetoothComms.Audio {
 
         public void StopCapture() {
             BassWasapi.BASS_WASAPI_Stop(true);
+            Free();
 
             captureThread.Abort();
             Capturing = false;
@@ -130,23 +131,26 @@ namespace BluetoothComms.Audio {
 
         private int hangCount = 0;
         private int previousLevel;
+        private object hangLock = new object();
         private void CheckHang() {
-            var level = BassWasapi.BASS_WASAPI_GetLevel();
-            if (previousLevel == level && level != 0) {
-                hangCount++;
-            }
+            lock (hangLock) {
+                var level = BassWasapi.BASS_WASAPI_GetLevel();
+                if (previousLevel == level && level != 0) {
+                    hangCount++;
+                }
 
-            previousLevel = level;
+                previousLevel = level;
 
-            //Required, because some programs hang the output. If the output hangs for a 75ms
-            //this piece of code re initializes the output
-            //so it doesn't make a gliched sound for long.
-            if (hangCount > 3) {
-                hangCount = 0;
-                Free();
-                Bass.BASS_Init(0, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
-                Initialized = false;
-                Initialize(deviceId);
+                //Required, because some programs hang the output. If the output hangs for a 75ms
+                //this piece of code re initializes the output
+                //so it doesn't make a gliched sound for long.
+                if (hangCount > 3) {
+                    hangCount = 0;
+                    Free();
+                    Bass.BASS_Init(0, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero);
+                    Initialized = false;
+                    Initialize(deviceId);
+                }
             }
         }
 
