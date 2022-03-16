@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="arduino\led-controller\led-controller.ino" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="32feet.NET">
